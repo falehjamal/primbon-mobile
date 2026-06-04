@@ -5,6 +5,11 @@ class AppStrings {
   static const appTitle = 'Primbon AI';
   static const subtitle = 'Perhitungan Weton untuk Pernikahan';
 
+  static const appDescription =
+      'Primbon AI mbantu ngetung weton lan kecocokan jodoh miturut tradisi Jawa. '
+      'Isi tanggal lahir lanang lan wedok, deleng itungan saka PEGAT nganti PESTHI, '
+      'lan golek dino nikah sing cocog kanggo sampeyan.';
+
   static const labelLanang = 'Tanggal Lahir Lanang';
   static const labelWedok = 'Tanggal Lahir Wedok';
   static const hitungKecocokan = 'Hitung Kecocokan';

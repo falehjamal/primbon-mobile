@@ -38,6 +38,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(height: 8),
+                  Center(
+                    child: Image.asset(
+                      'assets/images/app_logo.png',
+                      width: 72,
+                      height: 72,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
                   Text(
                     AppStrings.appTitle,
                     textAlign: TextAlign.center,

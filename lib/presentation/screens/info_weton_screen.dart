@@ -83,7 +83,7 @@ class InfoWetonScreen extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            AppStrings.welineSimbah,
+            AppStrings.welingeSimbah,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   fontStyle: FontStyle.italic,
