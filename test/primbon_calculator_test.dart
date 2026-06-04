@@ -55,5 +55,33 @@ void main() {
         isTrue,
       );
     });
+
+    test('cariTanggalDalamRentang returns ~10 dates per year per weton cycle', () {
+      final from = DateTime(2024, 1, 1);
+      final to = DateTime(2024, 12, 31);
+      final minggu = PrimbonCalculator.weekdayToJsDay(DateTime(2024, 1, 7).weekday);
+      final dates = PrimbonCalculator.cariTanggalDalamRentang(
+        hariIdx: minggu,
+        pasaranNama: 'Wage',
+        from: from,
+        to: to,
+      );
+      // Siklus weton 35 hari → ~10-11 kali per tahun
+      expect(dates.length, inInclusiveRange(10, 11));
+      for (final d in dates) {
+        final w = PrimbonCalculator.hitungWeton(d);
+        expect(w.hari, 'Minggu');
+        expect(w.pasaran, 'Wage');
+      }
+    });
+
+    test('groupTanggalPerBulan groups by month key', () {
+      final map = {
+        'Minggu Wage': [DateTime(2024, 3, 10), DateTime(2024, 4, 14)],
+      };
+      final grouped = PrimbonCalculator.groupTanggalPerBulan(map);
+      expect(grouped[DateTime(2024, 3)]?.length, 1);
+      expect(grouped[DateTime(2024, 4)]?.length, 1);
+    });
   });
 }

@@ -72,6 +72,17 @@ class NikahRecommendation {
   final Map<String, List<DateTime>> tanggalPerKombinasi;
 }
 
+/// Satu tanggal rekomendasi nikah beserta label weton
+class RekomendasiNikahHari {
+  const RekomendasiNikahHari({
+    required this.tanggal,
+    required this.wetonLabel,
+  });
+
+  final DateTime tanggal;
+  final String wetonLabel;
+}
+
 /// Kalkulator primbon — port 1:1 dari JavaScript source lama
 class PrimbonCalculator {
   /// Konversi DateTime.weekday (1=Senin..7=Minggu) ke getDay() (0=Minggu..6=Sabtu)
@@ -175,11 +186,82 @@ class PrimbonCalculator {
     return hasil;
   }
 
+  /// Cari semua tanggal dengan weton tertentu dalam rentang [from]..[to] (inklusif)
+  static List<DateTime> cariTanggalDalamRentang({
+    required int hariIdx,
+    required String pasaranNama,
+    required DateTime from,
+    required DateTime to,
+  }) {
+    final hasil = <DateTime>[];
+    final start = DateTime(from.year, from.month, from.day);
+    final end = DateTime(to.year, to.month, to.day);
+    if (end.isBefore(start)) return hasil;
+
+    final pasaranIdx = pasaranList.indexWhere((p) => p.nama == pasaranNama);
+    if (pasaranIdx < 0) return hasil;
+
+    final base = DateTime(
+      pasaranBaseDate.year,
+      pasaranBaseDate.month,
+      pasaranBaseDate.day,
+    );
+
+    var current = start;
+    while (!current.isAfter(end)) {
+      final dayOfWeek = weekdayToJsDay(current.weekday);
+      final diff = current.difference(base).inDays;
+      final currentPasaranIdx = ((diff % 5) + 5) % 5;
+
+      if (dayOfWeek == hariIdx && currentPasaranIdx == pasaranIdx) {
+        hasil.add(DateTime(current.year, current.month, current.day));
+      }
+      current = current.add(const Duration(days: 1));
+    }
+    return hasil;
+  }
+
+  /// Kelompokkan tanggal rekomendasi per bulan (key = tanggal 1 di bulan tersebut)
+  static Map<DateTime, List<RekomendasiNikahHari>> groupTanggalPerBulan(
+    Map<String, List<DateTime>> tanggalPerKombinasi,
+  ) {
+    final result = <DateTime, List<RekomendasiNikahHari>>{};
+    for (final entry in tanggalPerKombinasi.entries) {
+      for (final d in entry.value) {
+        final monthKey = DateTime(d.year, d.month);
+        result.putIfAbsent(monthKey, () => []).add(
+              RekomendasiNikahHari(tanggal: d, wetonLabel: entry.key),
+            );
+      }
+    }
+    for (final list in result.values) {
+      list.sort((a, b) => a.tanggal.compareTo(b.tanggal));
+    }
+    return result;
+  }
+
+  /// Daftar bulan dari [from] sampai [to] untuk render kalender
+  static List<DateTime> bulanDalamRentang(DateTime from, DateTime to) {
+    final months = <DateTime>[];
+    var current = DateTime(from.year, from.month);
+    final end = DateTime(to.year, to.month);
+    while (!current.isAfter(end)) {
+      months.add(current);
+      if (current.month == 12) {
+        current = DateTime(current.year + 1, 1);
+      } else {
+        current = DateTime(current.year, current.month + 1);
+      }
+    }
+    return months;
+  }
+
   /// Cari hari nikah: jumlah neptu gabungan mod 3 = 2
   static NikahRecommendation cariHariNikah(
     DateTime tglLanang,
     DateTime tglWedok, {
     DateTime? from,
+    DateTime? to,
     int tanggalPerKombinasi = 5,
   }) {
     final l = hitungWeton(tglLanang);
@@ -203,14 +285,22 @@ class PrimbonCalculator {
     }
 
     final tanggalMap = <String, List<DateTime>>{};
+    final startFrom = from ?? DateTime.now();
     for (final k in kombinasiCocok) {
       final key = '${k.hari} ${k.pasaran}';
-      tanggalMap[key] = cariTanggalDenganWeton(
-        hariIdx: k.hariIdx,
-        pasaranNama: k.pasaran,
-        from: from,
-        jumlah: tanggalPerKombinasi,
-      );
+      tanggalMap[key] = to != null
+          ? cariTanggalDalamRentang(
+              hariIdx: k.hariIdx,
+              pasaranNama: k.pasaran,
+              from: startFrom,
+              to: to,
+            )
+          : cariTanggalDenganWeton(
+              hariIdx: k.hariIdx,
+              pasaranNama: k.pasaran,
+              from: startFrom,
+              jumlah: tanggalPerKombinasi,
+            );
     }
 
     return NikahRecommendation(

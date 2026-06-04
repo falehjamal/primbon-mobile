@@ -7,24 +7,11 @@ import '../providers/primbon_provider.dart';
 import '../widgets/date_input_field.dart';
 import 'info_nikah_screen.dart';
 import 'info_weton_screen.dart';
+import 'nikah_calendar_screen.dart';
 import 'result_jodoh_section.dart';
-import 'result_nikah_section.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<PrimbonProvider>().init();
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,13 +112,22 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: Colors.transparent,
                             child: InkWell(
                               borderRadius: BorderRadius.circular(12),
-                              onTap: () async {
-                                await p.cariHariNikah();
-                                if (p.errorMessage != null && context.mounted) {
+                              onTap: () {
+                                if (p.tglLanang == null || p.tglWedok == null) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(p.errorMessage!)),
+                                    const SnackBar(
+                                      content: Text(AppStrings.tanggalKosong),
+                                    ),
                                   );
+                                  return;
                                 }
+                                Navigator.push(
+                                  context,
+                                  NikahCalendarScreen.route(
+                                    tglLanang: p.tglLanang!,
+                                    tglWedok: p.tglWedok!,
+                                  ),
+                                );
                               },
                               child: const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 16),
@@ -179,74 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ],
-                  if (p.resultView == ResultView.nikah && p.hasilNikah != null) ...[
-                    const SizedBox(height: 32),
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 400),
-                      child: ResultNikahSection(
-                        key: ValueKey(p.hasilNikah!.angkaTarget),
-                        hasil: p.hasilNikah!,
-                      ),
-                    ),
-                  ],
-                  const SizedBox(height: 40),
-                  Text(
-                    AppStrings.riwayat.toUpperCase(),
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 1,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                  ),
-                  const SizedBox(height: 16),
-                  if (p.riwayat.isEmpty)
-                    Text(
-                      AppStrings.belumRiwayat,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                    )
-                  else
-                    ...p.riwayat.map(
-                      (item) => Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: Material(
-                          color: Theme.of(context).cardTheme.color,
-                          borderRadius: BorderRadius.circular(10),
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(10),
-                            onTap: () => p.loadFromRiwayat(item),
-                            child: Padding(
-                              padding: const EdgeInsets.all(14),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      item.label,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                    ),
-                                  ),
-                                  Text(
-                                    item.waktu,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                        ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                  const SizedBox(height: 24),
                 ],
               ),
             );

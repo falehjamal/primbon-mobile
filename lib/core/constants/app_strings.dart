@@ -14,9 +14,12 @@ class AppStrings {
   static const labelWedok = 'Tanggal Lahir Wedok';
   static const hitungKecocokan = 'Hitung Kecocokan';
   static const cariHariNikah = 'Cari Hari Nikah';
-  static const riwayat = 'Riwayat';
-  static const belumRiwayat = 'Belum ada riwayat';
   static const tanggalKosong = 'Tanggal lahir kudu di isi.';
+  static const rekomendasiHariNikah = 'Rekomendasi Hari Nikah';
+  static const satuTahun = '1 Tahun Ke Depan';
+  static const duaTahun = '2 Tahun Ke Depan';
+  static const legendRekomendasi = 'Tanggal rekomendasi nikah';
+  static const kombinasiWeton = 'Kombinasi Weton';
 
   static const pituduhWeton = 'Pituduh Weton';
   static const daftarItungan = 'Daftar Itungan (1-36)';
