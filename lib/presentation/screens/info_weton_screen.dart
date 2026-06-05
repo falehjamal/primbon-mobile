@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/constants/app_strings.dart';
 import '../../core/theme/app_theme.dart';
 import '../../logic/primbon_data.dart';
+import '../widgets/app_footer.dart';
 import '../widgets/section_card.dart';
 import 'info_itungan_screen.dart';
 
@@ -90,6 +91,7 @@ class InfoWetonScreen extends StatelessWidget {
                   color: Theme.of(context).colorScheme.secondary,
                 ),
           ),
+          const AppFooter(),
         ],
       ),
     );

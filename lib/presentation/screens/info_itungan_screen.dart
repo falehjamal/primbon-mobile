@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/constants/app_strings.dart';
+import '../widgets/app_footer.dart';
 import '../widgets/itungan_chip.dart';
 
 class InfoItunganScreen extends StatelessWidget {
@@ -25,6 +26,7 @@ class InfoItunganScreen extends StatelessWidget {
                   color: Theme.of(context).colorScheme.secondary,
                 ),
           ),
+          const AppFooter(),
         ],
       ),
     );

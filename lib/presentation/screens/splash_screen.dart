@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/constants/app_strings.dart';
+import '../widgets/app_footer.dart';
 import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -43,8 +44,8 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const Spacer(),
                 Image.asset(
                   'assets/images/app_logo.png',
                   width: 160,
@@ -84,6 +85,8 @@ class _SplashScreenState extends State<SplashScreen> {
                   height: 28,
                   child: CircularProgressIndicator(strokeWidth: 2.5),
                 ),
+                const Spacer(),
+                const AppFooter(compact: true),
               ],
             ),
           ),

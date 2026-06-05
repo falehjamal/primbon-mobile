@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../core/constants/app_strings.dart';
 import '../../core/theme/app_theme.dart';
 import '../providers/primbon_provider.dart';
+import '../widgets/app_footer.dart';
 import '../widgets/date_input_field.dart';
 import 'info_nikah_screen.dart';
 import 'info_weton_screen.dart';
@@ -175,7 +176,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                   ],
-                  const SizedBox(height: 24),
+                  const AppFooter(),
                 ],
               ),
             );

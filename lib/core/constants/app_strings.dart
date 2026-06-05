@@ -45,6 +45,12 @@ class AppStrings {
   static const polaItungan =
       'Pola: PEGAT → RATU → JODOH → TOPO → TINARI → PADU → SUJANAN → PESTHI (berulang)';
 
+  static const footerMadeWith = 'Made with';
+  static const footerBy = 'by ';
+  static const footerBrand = 'faleh.id';
+
+  static String footerCopyright(int year) => '© $year $footerBrand';
+
   static const tegesItems = <Map<String, String>>[
     {
       'title': '1. PEGAT',

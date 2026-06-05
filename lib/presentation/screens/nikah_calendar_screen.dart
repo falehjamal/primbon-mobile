@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/constants/app_strings.dart';
 import '../../core/theme/app_theme.dart';
 import '../../logic/primbon_calculator.dart';
+import '../widgets/app_footer.dart';
 import '../widgets/static_month_calendar.dart';
 
 enum _RentangTahun { satu, dua }
@@ -111,6 +112,7 @@ class _NikahCalendarScreenState extends State<NikahCalendarScreen> {
               rekomendasi: grouped[bulan] ?? [],
             ),
           ),
+          const AppFooter(),
         ],
       ),
     );

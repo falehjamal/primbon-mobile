@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/constants/app_strings.dart';
+import '../widgets/app_footer.dart';
 import '../widgets/section_card.dart';
 
 class InfoNikahScreen extends StatelessWidget {
@@ -97,6 +98,7 @@ class InfoNikahScreen extends StatelessWidget {
                   color: Theme.of(context).colorScheme.secondary,
                 ),
           ),
+          const AppFooter(),
         ],
       ),
     );
